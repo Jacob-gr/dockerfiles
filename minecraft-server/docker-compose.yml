@@ -1,0 +1,52 @@
+version: '3.2'
+# Other docker-compose examples in /examples
+
+services:
+  mc-server:
+    image: itzg/minecraft-server
+    ports:
+      - "25565:25565"
+      - "28016:28016"
+    networks:
+      - net-minecraft
+    volumes:
+      - type: bind
+        source: /Minecraft-Vanilla/data
+        target: /data
+    environment:
+      EULA: "TRUE"
+      MAX_MEMORY: 2G
+      SERVER_NAME: "Da World"
+      DIFFICULTY: "normal"
+      MAX_BUILD_HEIGHT: 256
+      MAX_TICK_TIME: 60000
+      VIEW_DISTANCE: 10
+      MAX_PLAYERS: 10
+      MAX_WORLD_SIZE: 29999984
+      ALLOW_NETHER: "true"
+      FORCE_GAMEMODE: "true"
+      GENERATE_STRUCTURES: "true"
+      SPAWN_ANIMALS: "true"
+      SPAWN_MONSTERS: "true"
+      SPAWN_NPCS: "true"
+      SNOOPER_ENABLED: "false"
+      CONSOLE: "false"
+      ENABLE_RCON: "true"
+      RCON_PASSWORD: "LPnzdwuvKx6P"
+      RCON_PORT: 28016
+    restart: always
+  rcon:
+    image: itzg/rcon
+    ports:
+      - "4326:4326"
+      - "4327:4327"
+    networks:
+      - net-minecraft
+    volumes:
+      - "rcon:/opt/rcon-web-admin/db"
+
+volumes:
+  rcon:
+
+networks:
+  net-minecraft:
